@@ -1,6 +1,7 @@
 -- 1. Create the bible table
 CREATE TABLE bible_work (
     bible_work_id RAW(16) DEFAULT sys_guid() PRIMARY KEY,
+    random_bible_verse varchar2(4000) not null,
     bible    VARCHAR2(1000) NOT NULL,
     date_read               TIMESTAMP(9) WITH TIME ZONE DEFAULT systimestamp(9),
     CONSTRAINT uq_bible UNIQUE ( bible ),
