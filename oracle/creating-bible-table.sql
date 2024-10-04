@@ -1,5 +1,3 @@
-
-
 CREATE TABLE bible_translation (
     bible_translation_id RAW(16) DEFAULT sys_guid() PRIMARY KEY,
     bible_translation varchar2(1000) not null,

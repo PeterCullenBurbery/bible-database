@@ -1,8 +1,8 @@
-ALTER TABLE bible_work MODIFY
-    bible_translation_id RAW(16) NULL;
+ALTER TABLE database_information MODIFY
+    database_id RAW(16) NULL;
 
 SELECT
-    bible_work_id
+    database_id
 FROM
     bible_work
 ORDER BY
@@ -18,52 +18,48 @@ WHERE
                   'web',
                   'i' );
 
-UPDATE bible_work
+UPDATE database_information
 SET
-    bible_translation_id = (
+    database_id = (
         SELECT
-            bible_translation_id
+            database_id
         FROM
-            bible_translation
+            database
         WHERE
-            REGEXP_LIKE ( bible_translation,
-                          'web',
+            REGEXP_LIKE ( database,
+                          'Oracle',
                           'i' )
     )
 WHERE
-    bible_work_id = (
+    database_information.database_information_id = (
         SELECT
-            bible_work_id
+            database_information_id
         FROM
-            bible_work
+            database_information
         ORDER BY
             date_created DESC
         FETCH FIRST 1 ROWS ONLY
     );
 
-ALTER TABLE bible_work MODIFY
-    bible_translation_id RAW(16) NOT NULL;
+ALTER TABLE database_information MODIFY
+    database_id RAW(16) NOT NULL;
 
 SELECT
-    bw.random_bible_verse,
-    bw.bible,
-    bt.bible_translation,
-    bw.date_read
+    di.database_information,
+    db.database
 FROM
-         bible_work bw
-    JOIN bible_translation bt ON bw.bible_translation_id = bt.bible_translation_id;
+         database_information di
+    JOIN database db ON di.database_id = db.database_id;
 
-CREATE VIEW bible_reading AS
-    SELECT
-        bw.random_bible_verse,
-        bw.bible,
-        bt.bible_translation,
-        bw.date_read
-    FROM
-             bible_work bw
-        JOIN bible_translation bt ON bw.bible_translation_id = bt.bible_translation_id;
+CREATE VIEW database_information_view AS
+SELECT
+    di.database_information,
+    db.database
+FROM
+         database_information di
+    JOIN database db ON di.database_id = db.database_id;
 
 SELECT
     *
 FROM
-    bible_reading;
+    database_information_view;
